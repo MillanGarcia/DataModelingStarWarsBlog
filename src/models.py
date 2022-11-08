@@ -1,5 +1,8 @@
 import os
 import sys
+import datetime
+from sqlalchemy import Column, Integer, DateTime
+from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
@@ -13,18 +16,51 @@ class Person(Base):
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
+    user_name = Column(String(250), nullable=False)
     name = Column(String(250), nullable=False)
+    last_name = Column(String(250), nullable=False)
+    email = Column(String(250) )
+    password = Column(String(250), nullable=False)
+    subscription = Column(DateTime, default=datetime.datetime.utcnow)
 
-class Address(Base):
-    __tablename__ = 'address'
+class Planetas(Base):
+    __tablename__ = 'planetas'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
+    name = Column(String(250))
+    
+
+class Personajes(Base):
+    __tablename__ = 'personajes'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250))
+    
+    
+class Vehiculos(Base):
+    __tablename__ = 'vehiculos'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250))
+    
+
+class FavAux(Base):
+    __tablename__ = 'favaux'
+    # Here we define columns for the table address.
+    # Notice that each column is also a normal Python instance attribute.
+    id = Column(Integer, primary_key=True)
     person_id = Column(Integer, ForeignKey('person.id'))
+    planeta_id = Column(Integer, ForeignKey('planetas.id'))
+    personajes_id = Column(Integer, ForeignKey('personajes.id'))
+    vehiculos_id = Column(Integer, ForeignKey('vehiculos.id'))
     person = relationship(Person)
+    planetas = relationship(Planetas)
+    personajes = relationship(Personajes)
+    vehiculos = relationship(Vehiculos)
+
 
     def to_dict(self):
         return {}
